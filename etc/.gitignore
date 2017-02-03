@@ -1,1 +1,3 @@
-common.env
+# Ignore env files, please copy from *.env.example
+*.env
+

@@ -12,8 +12,11 @@ services:
 
   php-fpm:
     build: ./dockers/php
+    image: php:5.4-fpm-custom
     volumes:
       - ./data/htdocs:/var/www/html
+    env_file:
+      - ./etc/common.env
 
   mysql:
     image: mariadb:5.5
@@ -21,3 +24,4 @@ services:
       - ./data/mysql:/var/lib/mysql
     env_file:
       - ./etc/common.env
+      - ./etc/mysql.env
