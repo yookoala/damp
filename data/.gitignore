@@ -1,0 +1,14 @@
+# document root
+htdocs/*
+!htdocs/.gitkeep
+
+# mysql data folder
+mysql/*
+!mysql/.gitkeep
+
+# mysql import data folder
+mysql-import/*
+!mysql-import/.gitkeep
+
+logs/*
+!logs/.gitkeep

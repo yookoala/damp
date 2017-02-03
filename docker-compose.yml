@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  httpd:
+    image: httpd:2.4-alpine
+    ports:
+      - 8080:80
+    volumes:
+      - ./data/logs/httpd:/usr/local/apache2/logs
+      - ./etc/httpd:/usr/local/apache2/conf
+      - ./data/htdocs:/var/www/html
+
+  php-fpm:
+    build: ./dockers/php
+    volumes:
+      - ./data/htdocs:/var/www/html
+
+  mysql:
+    image: mariadb:5.5
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    env_file:
+      - ./etc/common.env
