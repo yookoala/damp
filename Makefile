@@ -1,7 +1,7 @@
 #
 # Variables
 #
-MYSQL_IMPORT_FILE := "./data/mysql-import/import.sql"
+MYSQL_IMPORT_FILE := "./var/mysql-import/import.sql"
 
 
 #

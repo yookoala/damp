@@ -25,7 +25,7 @@ You may edit the generated files afterwards:
 
 If you want to initialize your database, please:
 
-1. Copy your SQL dump file to ./data/mysql-import/import.sql
+1. Copy your SQL dump file to `./var/mysql-import/import.sql`
 
 2. Run this:
     ```
@@ -47,8 +47,9 @@ make httpd-php-clean
 
 ### D. Place your source into htdocs
 
-All hosted file should be in `./data/htdocs`
+All hosted file should be in `./var/www/html`.
 
+It will be mapped in PHP and Apache dockers as `/var/www/html`.
 
 
 ## Usage

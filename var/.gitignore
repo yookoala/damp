@@ -1,7 +1,6 @@
 # document root
-htdocs/*
-!htdocs/.gitkeep
-!htdocs/phpinfo.php
+www/html/*
+!www/html/.gitkeep
 
 # mysql data folder
 mysql/*

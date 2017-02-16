@@ -1,19 +1,20 @@
 version: '2'
 
 services:
+
   httpd:
     image: httpd:2.4-alpine
     ports:
       - 8080:80
     volumes:
-      - ./data/logs/httpd:/usr/local/apache2/logs
       - ./etc/httpd:/usr/local/apache2/conf
-      - ./data/htdocs:/var/www/html
+      - ./var/logs/httpd:/usr/local/apache2/logs
+      - ./var/www:/var/www
 
   mysql:
     image: mariadb:5.5
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - ./var/mysql:/var/lib/mysql
     env_file:
       - ./etc/common.env
       - ./etc/mysql.env
@@ -28,7 +29,7 @@ services:
       dockerfile: ./php54.dockerfile
     image: php:5.4-fpm-custom
     volumes:
-      - ./data/htdocs:/var/www/html
+      - ./var/www:/var/www
     env_file:
       - ./etc/common.env
     depends_on:
@@ -41,7 +42,7 @@ services:
       dockerfile: ./php55.dockerfile
     image: php:5.5-fpm-custom
     volumes:
-      - ./data/htdocs:/var/www/html
+      - ./var/www:/var/www
     env_file:
       - ./etc/common.env
     depends_on:
@@ -54,7 +55,7 @@ services:
       dockerfile: ./php56.dockerfile
     image: php:5.6-fpm-custom
     volumes:
-      - ./data/htdocs:/var/www/html
+      - ./var/www:/var/www
     env_file:
       - ./etc/common.env
     depends_on:
@@ -67,7 +68,7 @@ services:
       dockerfile: ./php70.dockerfile
     image: php:7.0-fpm-custom
     volumes:
-      - ./data/htdocs:/var/www/html
+      - ./var/www:/var/www
     env_file:
       - ./etc/common.env
     depends_on:
@@ -80,7 +81,7 @@ services:
       dockerfile: ./php71.dockerfile
     image: php:7.1-fpm-custom
     volumes:
-      - ./data/htdocs:/var/www/html
+      - ./var/www:/var/www
     env_file:
       - ./etc/common.env
     depends_on:
