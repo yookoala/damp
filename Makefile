@@ -8,7 +8,7 @@ MYSQL_IMPORT_FILE := "./var/mysql-import/import.sql"
 # Primary targets
 #
 
-up: httpd-php-all
+up: httpd-php-all env
 	docker-compose up -d
 
 down:
@@ -17,7 +17,22 @@ down:
 logs:
 	docker-compose logs -f
 
-.PHONY: up down logs
+clean: down httpd-php-clean env-clean
+
+clean-all: clean var-clean
+
+.PHONY: up down logs clean clean-all
+
+
+#
+# var folder management
+#
+
+var-clean: down
+	sudo rm -Rf var/logs/*
+	sudo rm -Rf var/mysql/*
+
+.PHONY: var-clean
 
 
 #
@@ -42,7 +57,7 @@ etc/%.env:
 # PHP Version specific setup
 #
 
-up.%: httpd-php-clean etc/httpd/sites-enabled/%.conf
+up.%: httpd-php-clean etc/httpd/sites-enabled/%.conf env
 	docker-compose up -d ${*}-fpm
 
 down.%:
