@@ -3,6 +3,7 @@
 #
 MYSQL_IMPORT_FILE := "./data/mysql-import/import.sql"
 
+
 #
 # Primary targets
 #
@@ -18,6 +19,7 @@ logs:
 
 .PHONY: up down logs
 
+
 #
 # Environment files
 #
@@ -31,6 +33,68 @@ etc/mysql.env:
 	cp -pdf ./etc/mysql.env.example ./etc/mysql.env
 
 .PHONY: env
+
+
+#
+# PHP Version specific setup
+#
+
+up-php54: httpd-php-clean httpd-php54
+	docker-compose up -d php54-fpm
+
+up-php55: httpd-php-clean httpd-php55
+	docker-compose up -d php55-fpm
+
+up-php56: httpd-php-clean httpd-php56
+	docker-compose up -d php56-fpm
+
+up-php70: httpd-php-clean httpd-php70
+	docker-compose up -d php70-fpm
+
+up-php71: httpd-php-clean httpd-php71
+	docker-compose up -d php71-fpm
+
+
+#
+# HTTPD and config connecting to PHP-FPM
+#
+
+httpd:
+	docker-compose up -d httpd
+
+httpd-php-all: httpd-php54 httpd-php55 httpd-php56 httpd-php70 httpd-php71
+
+httpd-php-clean:
+	find ./etc/httpd/sites-enabled/. -type l -exec rm -f "{}" \;
+
+httpd-php54: etc/httpd/sites-enabled/php54.conf
+
+etc/httpd/sites-enabled/php54.conf:
+	cd ./etc/httpd/sites-enabled && ln -s ../sites-available/php54.conf
+
+httpd-php55: etc/httpd/sites-enabled/php55.conf
+
+etc/httpd/sites-enabled/php55.conf:
+	cd ./etc/httpd/sites-enabled && ln -s ../sites-available/php55.conf
+
+httpd-php56: etc/httpd/sites-enabled/php56.conf
+
+etc/httpd/sites-enabled/php56.conf:
+	cd ./etc/httpd/sites-enabled && ln -s ../sites-available/php56.conf
+
+httpd-php70: etc/httpd/sites-enabled/php70.conf
+
+etc/httpd/sites-enabled/php70.conf:
+	cd ./etc/httpd/sites-enabled && ln -s ../sites-available/php70.conf
+
+httpd-php71: etc/httpd/sites-enabled/php71.conf
+
+etc/httpd/sites-enabled/php71.conf:
+	cd ./etc/httpd/sites-enabled && ln -s ../sites-available/php71.conf
+
+.PHONY: httpd-php-all httpd-php-clean
+.PHONY: httpd-php54 httpd-php55 httpd-php56 httpd-php70
+
 
 #
 # MySQL related targets

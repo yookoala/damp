@@ -32,6 +32,65 @@ If you want to initialize your database, please:
     make mysql mysql-prepare
     ```
 
+### C. Setup Configs
+
+To use previously assigned configs
+```
+make httpd-php-all
+```
+
+To clear up previous configs
+```
+make httpd-php-clean
+```
+
+
+### D. Place your source into htdocs
+
+All hosted file should be in `./data/htdocs`
+
+
+
+## Usage
+
+### Start All the Services
+
+```
+make up
+```
+
+The Apache will be bind to port 8080 of your machine
+
+### Start Specific PHP Version
+
+To start HTTPD with just 1 of the PHP, use these commands:
+
+ * `make up-php54` form php-5.4
+ * `make up-php55` form php-5.5
+ * `make up-php56` form php-5.6
+ * `make up-php70` form php-7.0
+ * `make up-php71` form php-7.1
+
+
+### Stop All the Services
+
+```
+make down
+```
+
+### See Service Logs
+
+```
+make logs
+```
+
+### Connect to MySQL CLI
+
+If you want to connect the mysql with CLI client, run this:
+
+```
+make mysql-cli
+```
 
 ## Special Use Case
 
@@ -58,20 +117,4 @@ $databases = array (
   ),
 );
 
-```
-
-## Usage
-
-(Finish me)
-
-make up
-make down
-make logs
-
-### Connect to MySQL CLI
-
-If you want to connect the mysql with CLI client, run this:
-
-```
-make mysql-cli
 ```

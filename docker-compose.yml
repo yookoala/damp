@@ -10,14 +10,6 @@ services:
       - ./etc/httpd:/usr/local/apache2/conf
       - ./data/htdocs:/var/www/html
 
-  php-fpm:
-    build: ./dockers/php
-    image: php:5.4-fpm-custom
-    volumes:
-      - ./data/htdocs:/var/www/html
-    env_file:
-      - ./etc/common.env
-
   mysql:
     image: mariadb:5.5
     volumes:
@@ -25,3 +17,72 @@ services:
     env_file:
       - ./etc/common.env
       - ./etc/mysql.env
+
+  #
+  # different PHP versions
+  #
+
+  php54-fpm:
+    build:
+      context: ./dockers
+      dockerfile: ./php54.dockerfile
+    image: php:5.4-fpm-custom
+    volumes:
+      - ./data/htdocs:/var/www/html
+    env_file:
+      - ./etc/common.env
+    depends_on:
+      - httpd
+      - mysql
+
+  php55-fpm:
+    build:
+      context: ./dockers
+      dockerfile: ./php55.dockerfile
+    image: php:5.5-fpm-custom
+    volumes:
+      - ./data/htdocs:/var/www/html
+    env_file:
+      - ./etc/common.env
+    depends_on:
+      - httpd
+      - mysql
+
+  php56-fpm:
+    build:
+      context: ./dockers
+      dockerfile: ./php56.dockerfile
+    image: php:5.6-fpm-custom
+    volumes:
+      - ./data/htdocs:/var/www/html
+    env_file:
+      - ./etc/common.env
+    depends_on:
+      - httpd
+      - mysql
+
+  php70-fpm:
+    build:
+      context: ./dockers
+      dockerfile: ./php70.dockerfile
+    image: php:7.0-fpm-custom
+    volumes:
+      - ./data/htdocs:/var/www/html
+    env_file:
+      - ./etc/common.env
+    depends_on:
+      - httpd
+      - mysql
+
+  php71-fpm:
+    build:
+      context: ./dockers
+      dockerfile: ./php71.dockerfile
+    image: php:7.1-fpm-custom
+    volumes:
+      - ./data/htdocs:/var/www/html
+    env_file:
+      - ./etc/common.env
+    depends_on:
+      - httpd
+      - mysql
