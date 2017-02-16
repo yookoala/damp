@@ -19,6 +19,20 @@ logs:
 .PHONY: up down logs
 
 #
+# Environment files
+#
+
+env: etc/common.env etc/mysql.env
+
+etc/common.env:
+	cp -pdf ./etc/common.env.example ./etc/common.env
+
+etc/mysql.env:
+	cp -pdf ./etc/mysql.env.example ./etc/mysql.env
+
+.PHONY: env
+
+#
 # MySQL related targets
 #
 

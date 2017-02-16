@@ -2,9 +2,26 @@
 
 Docker based Apache, MariaDB, PHP stack.
 
+
 ## Setup
 
-### Import and Setup MySQL
+Before using the stack, you need to follow through the setup steps below.
+
+### A. Setup Environment
+
+All containers in this stack share some common variables defined in `.env`
+files. First you need to setup basic environment variables:
+
+```
+make env
+```
+
+You may edit the generated files afterwards:
+
+ * `./etc/common.env`
+ * `./etc/mysql.env`
+
+### B. Import and Setup MySQL
 
 If you want to initialize your database, please:
 
@@ -14,6 +31,12 @@ If you want to initialize your database, please:
     ```
     make mysql mysql-prepare
     ```
+
+
+## Special Use Case
+
+You may use environment variables directly in your config file. Here are some
+examples.
 
 ### Drupal Config
 
