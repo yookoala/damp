@@ -1,5 +1,11 @@
 # Documentation for DAMP
 
+ * [Requirements](#requirements)
+ * [Setup](#setup)
+ * [Usage](#usage)
+ * [CMS Configurations](#cms-configurations)
+ * [Extending the Stack](#extending-the-stack)
+
 ## Requirements
 
 This stack requires the below software to run
@@ -141,7 +147,7 @@ If you want to connect the mariadb with CLI client, run this:
 make mysql-cli
 ```
 
-## Special Use Case
+## CMS Configurations
 
 You may use environment variables directly in your config file. Here are some
 examples.
