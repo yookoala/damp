@@ -24,13 +24,16 @@ logs:
 # Environment files
 #
 
-env: etc/common.env etc/mysql.env
+env:
+	@for envfile in $$(ls ./etc/*.env.example); do \
+	  make etc/$$(basename -s ".example" $$envfile); \
+	done
 
-etc/common.env:
-	cp -pdf ./etc/common.env.example ./etc/common.env
+env-clean:
+	rm -f etc/*.env
 
-etc/mysql.env:
-	cp -pdf ./etc/mysql.env.example ./etc/mysql.env
+etc/%.env:
+	cp -pdf ./etc/${*}.env.example ./etc/${*}.env
 
 .PHONY: env
 
@@ -39,20 +42,14 @@ etc/mysql.env:
 # PHP Version specific setup
 #
 
-up-php54: httpd-php-clean httpd-php54
-	docker-compose up -d php54-fpm
+up.%: httpd-php-clean etc/httpd/sites-enabled/%.conf
+	docker-compose up -d ${*}-fpm
 
-up-php55: httpd-php-clean httpd-php55
-	docker-compose up -d php55-fpm
+down.%:
+	docker-compose stop ${*}-fpm
+	docker-compose rm -f ${*}-fpm
 
-up-php56: httpd-php-clean httpd-php56
-	docker-compose up -d php56-fpm
-
-up-php70: httpd-php-clean httpd-php70
-	docker-compose up -d php70-fpm
-
-up-php71: httpd-php-clean httpd-php71
-	docker-compose up -d php71-fpm
+.PHONY: up.% down.%
 
 
 #
@@ -62,38 +59,24 @@ up-php71: httpd-php-clean httpd-php71
 httpd:
 	docker-compose up -d httpd
 
-httpd-php-all: httpd-php54 httpd-php55 httpd-php56 httpd-php70 httpd-php71
+httpd-php-all:
+	@for conf in $$(find ./etc/httpd/sites-available -type f -name '*.conf' -exec basename "{}" \;); do \
+	  make etc/httpd/sites-enabled/$$conf; \
+	done
 
 httpd-php-clean:
 	find ./etc/httpd/sites-enabled/. -type l -exec rm -f "{}" \;
 
-httpd-php54: etc/httpd/sites-enabled/php54.conf
-
-etc/httpd/sites-enabled/php54.conf:
-	cd ./etc/httpd/sites-enabled && ln -s ../sites-available/php54.conf
-
-httpd-php55: etc/httpd/sites-enabled/php55.conf
-
-etc/httpd/sites-enabled/php55.conf:
-	cd ./etc/httpd/sites-enabled && ln -s ../sites-available/php55.conf
-
-httpd-php56: etc/httpd/sites-enabled/php56.conf
-
-etc/httpd/sites-enabled/php56.conf:
-	cd ./etc/httpd/sites-enabled && ln -s ../sites-available/php56.conf
-
-httpd-php70: etc/httpd/sites-enabled/php70.conf
-
-etc/httpd/sites-enabled/php70.conf:
-	cd ./etc/httpd/sites-enabled && ln -s ../sites-available/php70.conf
-
-httpd-php71: etc/httpd/sites-enabled/php71.conf
-
-etc/httpd/sites-enabled/php71.conf:
-	cd ./etc/httpd/sites-enabled && ln -s ../sites-available/php71.conf
+etc/httpd/sites-enabled/%.conf:
+ifeq ($(wildcard "./etc/httpd/sites-available/$*.conf"),)
+	cd ./etc/httpd/sites-enabled && ln -s ../sites-available/$*.conf
+else
+	@echo "failed to make 'etc/httpd/sites-enabled/$*.conf':"
+	@echo " - source file 'etc/httpd/sites-available/$*.conf' not found."
+	@exit 1
+endif
 
 .PHONY: httpd-php-all httpd-php-clean
-.PHONY: httpd-php54 httpd-php55 httpd-php56 httpd-php70
 
 
 #

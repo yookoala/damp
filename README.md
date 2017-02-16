@@ -102,11 +102,11 @@ The Apache will be bind to port 8080 of your machine
 
 To start HTTPD with just 1 of the PHP, use these commands:
 
- * `make up-php54` for php-5.4
- * `make up-php55` for php-5.5
- * `make up-php56` for php-5.6
- * `make up-php70` for php-7.0
- * `make up-php71` for php-7.1
+ * `make up.php54` for php-5.4
+ * `make up.php55` for php-5.5
+ * `make up.php56` for php-5.6
+ * `make up.php70` for php-7.0
+ * `make up.php71` for php-7.1
 
 ### Accessing the Sites
 
