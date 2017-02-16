@@ -3,6 +3,36 @@
 Docker based Apache, MariaDB, PHP stack.
 
 
+## Requirements
+
+This stack requires the below software to run
+
+ * [Make][gnumake]
+ * [Docker][docker]
+ * [Docker Compose][docker-compose]
+
+[docker]: https://www.docker.com/
+[docker-compose]: https://docs.docker.com/compose/
+[gnumake]: https://www.gnu.org/software/make/
+
+To install them on Ubuntu 16.04+, the following command should do the job:
+
+```bash
+sudo apt update
+sudo apt upgrade
+sudo apt install -y docker make
+curl -L "https://github.com/docker/compose/releases/download/1.10.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+```
+
+To verify the requirements:
+
+```bash
+make --version
+docker --version
+docker-compose --version
+```
+
 ## Setup
 
 Before using the stack, you need to follow through the setup steps below.
@@ -34,7 +64,7 @@ If you want to initialize your database, please:
 
 ### C. Setup Configs
 
-To use previously assigned configs
+To use preset configurations
 ```
 make httpd-php-all
 ```
@@ -44,10 +74,16 @@ To clear up previous configs
 make httpd-php-clean
 ```
 
+If you want to do it yourself, simply add your virtual host configurations in
+this folder:
 
-### D. Place your source into htdocs
+  * [./etc/httpd/sites-enabled](etc/httpd/sites-enabled).
 
-All hosted file should be in `./var/www/html`.
+### D. Place your source into document root
+
+All hosted file should be in:
+
+ * [./var/www/html](var/www/html)
 
 It will be mapped in PHP and Apache dockers as `/var/www/html`.
 
@@ -66,11 +102,11 @@ The Apache will be bind to port 8080 of your machine
 
 To start HTTPD with just 1 of the PHP, use these commands:
 
- * `make up-php54` form php-5.4
- * `make up-php55` form php-5.5
- * `make up-php56` form php-5.6
- * `make up-php70` form php-7.0
- * `make up-php71` form php-7.1
+ * `make up-php54` for php-5.4
+ * `make up-php55` for php-5.5
+ * `make up-php56` for php-5.6
+ * `make up-php70` for php-7.0
+ * `make up-php71` for php-7.1
 
 ### Accessing the Sites
 
