@@ -8,7 +8,7 @@ MYSQL_IMPORT_FILE := "./var/mysql-import/import.sql"
 # Primary targets
 #
 
-up:
+up: httpd-php-all
 	docker-compose up -d
 
 down:

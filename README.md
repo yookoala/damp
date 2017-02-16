@@ -72,6 +72,21 @@ To start HTTPD with just 1 of the PHP, use these commands:
  * `make up-php70` form php-7.0
  * `make up-php71` form php-7.1
 
+### Accessing the Sites
+
+To access the sites, you can open your browser and open these domains:
+
+* [php54.damp.localhost:8080](http://php54.damp.localhost:8080)
+* [php55.damp.localhost:8080](http://php55.damp.localhost:8080)
+* [php56.damp.localhost:8080](http://php56.damp.localhost:8080)
+* [php70.damp.localhost:8080](http://php70.damp.localhost:8080)
+* [php71.damp.localhost:8080](http://php71.damp.localhost:8080)
+
+### Checking the PHP Version
+
+All default Apache configurations alias the path `/phpinfo` to the common
+script [phpinfo.php](var/www/common/phpinfo.php). In case you're not sure if
+you're using the desired version, you may check that path.
 
 ### Stop All the Services
 
