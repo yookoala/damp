@@ -170,3 +170,35 @@ $databases = array (
 );
 
 ```
+
+
+## Extending the Stack
+
+To add new PHP version to the stack, you need to:
+
+1. Define a new docker file. (i.e. `./dockers/php[version].dockerfile`). You may
+   reference other files in the [dockers folder](dockers).
+
+2. Add a new [docker-compose.yml](docker-compose.yml) definition for the new
+   PHP version. You may reference sections of other php versions.
+
+3. Add a new virtual host config to [sites-available](etc/httpd/sites-available)
+   folder. You should follow the naming convention and name it as
+   `php[version].conf`. You may reference other files in the same folder.
+
+Afterwards, these commands are already supporting your newly added php version:
+
+```
+make up
+make down
+make httpd-php-all
+make httpd-php-clean
+```
+
+You may also use the following command for free:
+
+```
+make etc/httpd/sites-enabled/php[version].conf
+make up.php[version]
+make down.php[version]
+```
