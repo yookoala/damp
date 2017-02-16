@@ -4,6 +4,16 @@ Docker based Apache, MariaDB, PHP stack.
 
 ## Setup
 
+### Import and Setup MySQL
+
+If you want to initialize your database, please:
+
+1. Copy your SQL dump file to ./data/mysql-import/import.sql
+
+2. Run this:
+    ```
+    make mysql mysql-prepare
+    ```
 
 ### Drupal Config
 
@@ -35,6 +45,10 @@ make up
 make down
 make logs
 
-make mysql
-make mysql-prepare
-make mysql-client
+### Connect to MySQL CLI
+
+If you want to connect the mysql with CLI client, run this:
+
+```
+make mysql-cli
+```
