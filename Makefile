@@ -40,15 +40,15 @@ var-clean: down
 #
 
 env:
-	@for envfile in $$(ls ./etc/*.env.example); do \
-	  make etc/$$(basename -s ".example" $$envfile); \
-	done
+	for name in ./etc/*.env.example; do \
+	  printf '%s\0' "$${name%.example}"; \
+	done | xargs -0 make
 
 env-clean:
 	rm -f etc/*.env
 
 etc/%.env:
-	cp -pdf ./etc/${*}.env.example ./etc/${*}.env
+	cp -pdf "./etc/${*}.env.example" "./etc/${*}.env"
 
 .PHONY: env
 
@@ -75,9 +75,9 @@ httpd:
 	docker-compose up -d httpd
 
 httpd-php-all:
-	@for conf in $$(find ./etc/httpd/sites-available -type f -name '*.conf' -exec basename "{}" \;); do \
-	  make etc/httpd/sites-enabled/$$conf; \
-	done
+	for name in ./etc/httpd/sites-available/*.conf; do \
+	  printf "etc/httpd/sites-enabled/%s\0" "$${name#./etc/httpd/sites-available/}"; \
+	done | xargs -0 make
 
 httpd-php-clean:
 	find ./etc/httpd/sites-enabled/. -type l -exec rm -f "{}" \;
