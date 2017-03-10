@@ -8,7 +8,7 @@ MYSQL_IMPORT_FILE := "./var/mysql-import/import.sql"
 # Primary targets
 #
 
-up: httpd-php-all env
+up: var/www/html httpd-php-all env
 	docker-compose up -d
 
 down:
@@ -20,6 +20,9 @@ logs:
 clean: down httpd-php-clean env-clean
 
 clean-all: clean var-clean
+
+var/www/html:
+	mkdir var/www/html
 
 .PHONY: up down logs clean clean-all
 
@@ -57,22 +60,35 @@ etc/%.env:
 # PHP Version specific setup
 #
 
-up.%: httpd-php-clean etc/httpd/sites-enabled/%.conf env
+%.up: var/www/html httpd-php-clean etc/httpd/sites-enabled/%.conf env
 	docker-compose up -d ${*}-fpm
 
-down.%:
-	docker-compose stop ${*}-fpm
+%.down:
+	docker-compose stop ${*}-fpm httpd
 	docker-compose rm -f ${*}-fpm
 
-.PHONY: up.% down.%
+httpd.up:
+	docker-compose up -d httpd
+
+httpd.down:
+	docker-compose stop httpd
+	docker-compose rm -f httpd
+
+mysql.up:
+	docker-compose up -d mysql
+
+mysql.down:
+	docker-compose stop mysql
+	docker-compose rm -f mysql
+
+.PHONY: %.up %.down
+.PHONY: httpd.up httpd.down
+.PHONY: mysql.up mysql.down
 
 
 #
 # HTTPD and config connecting to PHP-FPM
 #
-
-httpd:
-	docker-compose up -d httpd
 
 httpd-php-all:
 	for name in ./etc/httpd/sites-available/*.conf; do \
@@ -113,9 +129,6 @@ MYSQL_USER:
 MYSQL_PASS:
 	$(eval MYSQL_PASS := $(shell bash -c 'source ./etc/common.env && echo "$$MYSQL_PASS"'))
 
-mysql:
-	docker-compose up -d mysql
-
 mysql-ping: MYSQL_DOCKER_ID MYSQL_ROOT_PASSWORD MYSQL_DATABASE MYSQL_USER MYSQL_PASS
 	docker exec -it "${MYSQL_DOCKER_ID}" \
 		mysql -p"${MYSQL_ROOT_PASSWORD}" \
@@ -148,9 +161,9 @@ else
 	@echo "'${MYSQL_IMPORT_FILE}' does not exist. skip mysql-import."
 endif
 
-mysql-cli: MYSQL_DOCKER_ID MYSQL_ROOT_PASSWORD
+mysql-cli: MYSQL_DOCKER_ID MYSQL_ROOT_PASSWORD MYSQL_DATABASE
 	docker exec -it "${MYSQL_DOCKER_ID}" \
-		mysql -p"${MYSQL_ROOT_PASSWORD}"
+		mysql -p"${MYSQL_ROOT_PASSWORD}" "${MYSQL_DATABASE}"
 
 .PHONY: MYSQL_DOCKER_ID MYSQL_ROOT_PASSWORD MYSQL_DATABASE MYSQL_USER MYSQL_PASS
-.PHONY: mysql mysql-ping mysql-ping-wait mysql-prepare mysql-cli
+.PHONY: mysql-ping mysql-ping-wait mysql-prepare mysql-cli
