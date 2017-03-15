@@ -1,5 +1,9 @@
 FROM php:7.1-fpm
 
+# custom folder for common configurations
+VOLUME /usr/local/etc/damp.d
+ENV PHP_INI_SCAN_DIR=:/usr/local/etc/damp.d
+
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \

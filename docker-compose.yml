@@ -30,6 +30,7 @@ services:
     image: php:5.4-fpm-custom
     volumes:
       - ./var/www:/var/www
+      - ./etc/php/conf.d:/usr/local/etc/damp.d
     env_file:
       - ./etc/common.env
     depends_on:
@@ -43,6 +44,7 @@ services:
     image: php:5.5-fpm-custom
     volumes:
       - ./var/www:/var/www
+      - ./etc/php/conf.d:/usr/local/etc/damp.d
     env_file:
       - ./etc/common.env
     depends_on:
@@ -56,6 +58,7 @@ services:
     image: php:5.6-fpm-custom
     volumes:
       - ./var/www:/var/www
+      - ./etc/php/conf.d:/usr/local/etc/damp.d
     env_file:
       - ./etc/common.env
     depends_on:
@@ -69,6 +72,7 @@ services:
     image: php:7.0-fpm-custom
     volumes:
       - ./var/www:/var/www
+      - ./etc/php/conf.d:/usr/local/etc/damp.d
     env_file:
       - ./etc/common.env
     depends_on:
@@ -82,6 +86,7 @@ services:
     image: php:7.1-fpm-custom
     volumes:
       - ./var/www:/var/www
+      - ./etc/php/conf.d:/usr/local/etc/damp.d
     env_file:
       - ./etc/common.env
     depends_on:
