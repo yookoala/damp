@@ -81,6 +81,11 @@ mysql.down:
 	docker-compose stop mysql
 	docker-compose rm -f mysql
 
+mysql.cli:
+	$(eval MYSQL_ROOT_PASSWORD := $(shell bash -c 'source ./etc/mysql.env && echo $$MYSQL_ROOT_PASSWORD'))
+	$(eval MYSQL_DATABASE := $(shell bash -c 'source ./etc/common.env && echo $$MYSQL_DATABASE'))
+	docker-compose exec mysql mysql -u root -p"${MYSQL_ROOT_PASSWORD}" "${MYSQL_DATABASE}"
+
 .PHONY: %.up %.down
 .PHONY: httpd.up httpd.down
 .PHONY: mysql.up mysql.down
