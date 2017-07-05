@@ -1,9 +1,10 @@
-version: '2'
+version: '2.1'
 
 services:
 
   httpd:
     image: httpd:2.4-alpine
+    user: ${HTTPD_UID:-1000}
     ports:
       - 8080:80
     volumes:
@@ -13,6 +14,7 @@ services:
 
   mysql:
     image: mariadb:5.5
+    user: ${MYSQL_UID:-1000}
     volumes:
       - ./var/mysql:/var/lib/mysql
     env_file:
@@ -28,6 +30,7 @@ services:
       context: ./dockers
       dockerfile: ./php54.dockerfile
     image: php:5.4-fpm-custom
+    user: ${PHP_UID:-1000}
     volumes:
       - ./var/www:/var/www
       - ./etc/php/conf.d:/usr/local/etc/damp.d
@@ -42,6 +45,7 @@ services:
       context: ./dockers
       dockerfile: ./php55.dockerfile
     image: php:5.5-fpm-custom
+    user: ${PHP_UID:-1000}
     volumes:
       - ./var/www:/var/www
       - ./etc/php/conf.d:/usr/local/etc/damp.d
@@ -56,6 +60,7 @@ services:
       context: ./dockers
       dockerfile: ./php56.dockerfile
     image: php:5.6-fpm-custom
+    user: ${PHP_UID:-1000}
     volumes:
       - ./var/www:/var/www
       - ./etc/php/conf.d:/usr/local/etc/damp.d
@@ -70,6 +75,7 @@ services:
       context: ./dockers
       dockerfile: ./php70.dockerfile
     image: php:7.0-fpm-custom
+    user: ${PHP_UID:-1000}
     volumes:
       - ./var/www:/var/www
       - ./etc/php/conf.d:/usr/local/etc/damp.d
@@ -84,6 +90,7 @@ services:
       context: ./dockers
       dockerfile: ./php71.dockerfile
     image: php:7.1-fpm-custom
+    user: ${PHP_UID:-1000}
     volumes:
       - ./var/www:/var/www
       - ./etc/php/conf.d:/usr/local/etc/damp.d
